@@ -24,7 +24,8 @@ class RocAucEvaluation(Callback):
             score = roc_auc_score(self.y_val, y_pred)
             print("\n ROC-AUC - epoch: %d - score: %.6f \n" % (epoch+1, score))
 
-def get_model(max_features=30000, embed_size=300):
+# GRU model
+def get_GRU_model(max_features=30000, embed_size=300):
     inp = Input(shape=(maxlen, ))
     x = Embedding(max_features, embed_size, weights=[embedding_matrix])(inp)
     x = SpatialDropout1D(0.2)(x)
@@ -33,6 +34,20 @@ def get_model(max_features=30000, embed_size=300):
     max_pool = GlobalMaxPooling1D()(x)
     conc = concatenate([avg_pool, max_pool])
     outp = Dense(1, activation="sigmoid")(conc)
+    
+    model = Model(inputs=inp, outputs=outp)
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    return model
+
+# LSTM model
+def get_LSTM_model(max_features=30000, embed_size=300):
+    inp = Input(shape=(maxlen, ))
+    x = Embedding(max_features, embed_size, weights=[embedding_matrix])(inp)
+    x = SpatialDropout1D(0.2)(x)
+    x = LSTM(80, return_sequences=True)(x)
+    max_pool = GlobalMaxPooling1D()(x)
+    outp = Dense(1, activation="sigmoid")(max_pool)
     
     model = Model(inputs=inp, outputs=outp)
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -74,7 +89,7 @@ for word, i in word_index.items():
 print('Done.')
 
 # initialize model
-model = get_model()
+model = get_GRU_model()
 
 #train model
 batch_size = 32
