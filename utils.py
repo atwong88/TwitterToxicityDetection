@@ -41,7 +41,7 @@ def get_ngrams(data, toxic_data):
 
     for i in range(n):
         s = data[i]
-        tokens = [string for string in re.split('[\s\?!\.,():]', s.lower()) if string != ""]
+        tokens = [string for string in re.split('[\s\?!\.,():/]', s.lower()) if string != ""]
         for j in range(len(tokens)):
             word = tokens[j]
             if not word in words:
