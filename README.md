@@ -10,6 +10,7 @@ In 2018, Kaggle released a toxicity classification competition on a dataset cont
 - /data : contains datasets used for training and testing as well as the saved model files.
 - /data_collection : contains the scripts used to collect Twitter data from its streaming API
 - /main_project : containing the main project analysis notebook, requirements.txt, and the script used for training
+- /notebooks : contains work-in-progress notebooks used for experimentation and analysis
 - /output : contains the predictions from our model as well as a simple evaluation script
 - /topic_modelling : contains topic_modelling jupyter notebook and pickled model and dictionary files
 
